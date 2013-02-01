@@ -1,0 +1,66 @@
+package com.laudandjolynn.test.file;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.util.Calendar;
+
+/**
+ * @author: Laud
+ * @email: htd0324@gmail.com
+ * @date: 2013-2-1 下午2:10:01
+ * @copyright: www.armisi.com.cn
+ */
+public class ReadFile extends Thread {
+	@Override
+	public void run() {
+		try {
+			Calendar calstart = Calendar.getInstance();
+			Thread.sleep(10);
+			File file = new File("G:\\test.txt");
+
+			// 给该文件加锁
+			RandomAccessFile fis = new RandomAccessFile(file, "rw");
+			FileChannel fcin = fis.getChannel();
+			FileLock flin = null;
+			while (true) {
+				try {
+					flin = fcin.tryLock();
+					break;
+				} catch (Exception e) {
+					System.out.println("有其他线程正在操作该文件，"
+							+ Thread.currentThread().getName() + "休眠1000毫秒");
+					Thread.sleep(1000);
+				}
+
+			}
+			byte[] buf = new byte[1024];
+			StringBuffer sb = new StringBuffer();
+			while ((fis.read(buf)) != -1) {
+				sb.append(new String(buf, "utf-8"));
+				buf = new byte[1024];
+			}
+
+			System.out.println(sb.toString());
+
+			flin.release();
+			fcin.close();
+			fis.close();
+			fis = null;
+
+			Calendar calend = Calendar.getInstance();
+			System.out.println("读文件共花了"
+					+ (calend.getTimeInMillis() - calstart.getTimeInMillis())
+					+ "秒");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}
