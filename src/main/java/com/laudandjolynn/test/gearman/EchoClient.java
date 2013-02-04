@@ -61,8 +61,8 @@ public class EchoClient {
 
 		try {
 			EchoClient ec = new EchoClient(host, port);
-//			String value = ec.echo("hello!");
-//			System.out.println(value); // NOPMD
+			String value = ec.echo("hello!");
+			System.out.println(value); // NOPMD
 			System.out.println(ec.hello());
 			ec.shutdown();
 		} catch (IOException ioe) {
