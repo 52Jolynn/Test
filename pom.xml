@@ -32,6 +32,11 @@
 			<artifactId>gearman-java</artifactId>
 			<version>0.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>3.5.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
