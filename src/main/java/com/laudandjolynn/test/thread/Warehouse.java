@@ -1,6 +1,8 @@
 package com.laudandjolynn.test.thread;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author: Laud
@@ -111,6 +113,20 @@ public class Warehouse {
 		c6.start();
 
 		countDownLatch.await();
+		
+		ExecutorService pool = Executors.newFixedThreadPool(2); 
+        //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口 
+        Thread t1 = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("ddd");
+			}
+		},"jjjj"); 
+        //将线程放入池中进行执行 
+        pool.execute(t1); 
+        //关闭线程池 
+        pool.shutdown(); 
 		System.exit(0);
 	}
 }
